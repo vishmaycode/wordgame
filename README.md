@@ -1,8 +1,10 @@
-# Daily Wordle
+# Wordster (wordle clone)
 
-### This is a daily wordle app created using Vite + React + Typescript
+### This is a Wordster app created using Vite + React + Typescript
 
-#### It does not have a backend, the words are stored in a list and the logic to get a unique word daily is just to compare the number of days since a fixed date with the index of the word in the wordlist.
+#### Working
+ - It does not have a backend, the words are stored in a list 
+ - (Daily) and the logic to get a unique word daily is just to compare the number of days since a fixed date with the index of the word in the wordlist.
 
 ### Instrunctions
 

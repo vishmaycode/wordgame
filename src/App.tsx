@@ -125,7 +125,7 @@ function App() {
     <div className="min-h-screen bg-gray-900">
       <header className="border-b border-gray-800 bg-gray-800">
         <div className="max-w-4xl mx-auto px-4 py-3">
-          <h1 className="text-2xl font-bold text-white text-center">Daily Wordle</h1>
+          <h1 className="text-2xl font-bold text-white text-center">Wordster</h1>
         </div>
       </header>
 
