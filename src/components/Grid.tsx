@@ -5,7 +5,8 @@ interface GridProps {
 }
 
 export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
-  const empties = Array(6 - guesses.length - 1).fill('');
+  const emptyRowsCount = Math.max(0, 6 - guesses.length - 1);
+  const empties = Array(emptyRowsCount).fill('');
   const rows = [...guesses, currentGuess, ...empties].slice(0, 6);
 
   return (
