@@ -2,33 +2,28 @@ import words from 'an-array-of-english-words';
 
 const FIVE_LETTER_WORDS = words.filter(word => word.length === 5);
 
-export function getWordOfTheDay(wordList: string[]): { word: string; usedWords: string[] } {
-  // Get stored state
-  const storedState = localStorage.getItem('wordleState');
-  const state = storedState ? JSON.parse(storedState) : { usedWords: [], lastDate: '' };
+export function getWordOfTheDay(wordList: string[]): { word: string; dayNumber: number } {
+  // Get today's date and reset time to midnight
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
-  const today = new Date().toDateString();
+  // Calculate days since a fixed reference date (Mar 1, 2025)
+  const referenceDate = new Date(2025, 2, 1);
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const daysSinceReference = Math.floor((today.getTime() - referenceDate.getTime()) / millisecondsPerDay);
   
-  // If it's a new day, select a new word
-  if (today !== state.lastDate) {
-    // Filter out used words
-    const availableWords = wordList.filter(word => !state.usedWords.includes(word));
-    
-    // If all words have been used, reset the list
-    if (availableWords.length === 0) {
-      state.usedWords = [];
-      state.word = wordList[Math.floor(Math.random() * wordList.length)];
-    } else {
-      state.word = availableWords[Math.floor(Math.random() * availableWords.length)];
-    }
-    
-    state.usedWords.push(state.word);
-    state.lastDate = today;
-    
-    localStorage.setItem('wordleState', JSON.stringify(state));
-  }
+  // Use the day number to select a word deterministically
+  const wordIndex = daysSinceReference % wordList.length;
+  const word = wordList[wordIndex];
   
-  return { word: state.word, usedWords: state.usedWords };
+  // Optionally store the selected word in localStorage to avoid recalculation
+  localStorage.setItem('wordleState', JSON.stringify({
+    lastDate: today.toDateString(),
+    word,
+    dayNumber: daysSinceReference
+  }));
+  
+  return { word, dayNumber: daysSinceReference };
 }
 
 export function checkGuess(guess: string, target: string): ('correct' | 'present' | 'absent')[] {

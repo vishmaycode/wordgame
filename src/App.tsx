@@ -6,13 +6,35 @@ import { GameState, KeyboardKey } from './types';
 import WORD_LIST from './wordlist';
 
 function App() {
+  // Load saved game state or start a new game
   const [gameState, setGameState] = useState<GameState>(() => {
-    const { word } = getWordOfTheDay(WORD_LIST);
+    // Get stored state from localStorage
+    const savedState = localStorage.getItem('wordleGameState');
+    
+    // Get today's word
+    const { word, dayNumber } = getWordOfTheDay(WORD_LIST);
+    
+    // If we have saved state, check if it's from today
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      
+      // Check if the saved state is from the current day
+      if (parsedState.dayNumber === dayNumber) {
+        return {
+          ...parsedState,
+          targetWord: word  // Ensure we have the correct word
+        };
+      }
+      // If it's a new day, start fresh
+    }
+    
+    // Initialize a new game state
     return {
       currentGuess: '',
       guesses: [],
       history: [],
       targetWord: word,
+      dayNumber: dayNumber,  // Store the day number for comparison
       gameOver: false,
       won: false,
       error: ''
@@ -20,6 +42,11 @@ function App() {
   });
 
   const [keyStates, setKeyStates] = useState<Record<string, KeyboardKey['status']>>({});
+
+  // Save game state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('wordleGameState', JSON.stringify(gameState));
+  }, [gameState]);
 
   const handleKeyPress = useCallback((key: string) => {
     if (gameState.gameOver) return;
