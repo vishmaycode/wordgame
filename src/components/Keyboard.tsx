@@ -1,4 +1,3 @@
-import React from 'react';
 import { KeyboardKey } from '../types';
 
 const KEYBOARD_ROWS = [
@@ -35,8 +34,8 @@ export function Keyboard({ onKeyPress, keyStates }: KeyboardProps) {
                     status === 'present' ? 
                     'bg-yellow-600 text-white shadow-md' :
                     status === 'absent' ? 
-                    'bg-gray-600 text-white' :
-                    'bg-gray-700 text-white hover:bg-gray-600'
+                    'bg-gray-800 text-white' :
+                    'bg-gray-600 text-white hover:bg-gray-600'
                   }
                 `}
               >

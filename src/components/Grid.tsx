@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface GridProps {
   guesses: string[];
   currentGuess: string;
@@ -29,10 +27,10 @@ export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
               // Second pass: mark present letters (only if they haven't been marked as correct elsewhere)
               else if (lowerTarget.includes(lowerGuess[j])) {
                 const letterCount = lowerTarget.split(lowerGuess[j]).length - 1;
-                const correctPositions = lowerGuess.split('').filter((l, idx) => 
+                const correctPositions = lowerGuess.split('').filter((l: string, idx: number) => 
                   l === lowerGuess[j] && lowerTarget[idx] === l
                 ).length;
-                const presentCount = lowerGuess.slice(0, j + 1).split('').filter((l, idx) => 
+                const presentCount = lowerGuess.slice(0, j + 1).split('').filter((l: string, idx: number) => 
                   l === lowerGuess[j] && 
                   lowerTarget.includes(l) && 
                   lowerTarget[idx] !== l
@@ -57,12 +55,12 @@ export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
                   transform transition-all duration-300
                   ${letter ? 'scale-100' : 'scale-95'}
                   ${status === 'empty' ? 
-                    'bg-gray-800 border-gray-700 text-white' :
+                    'bg-gray-700 border-gray-700 text-white' :
                     status === 'correct' ? 
                     'bg-green-600 border-green-700 text-white shadow-lg scale-105' :
                     status === 'present' ? 
-                    'bg-yellow-600 border-yellow-700 text-white shadow-md scale-105' :
-                    'bg-gray-600 border-gray-700 text-white'
+                    'bg-yellow-700 border-yellow-700 text-white shadow-md scale-105' :
+                    'bg-gray-900 border-gray-700 text-white'
                   }
                 `}
               >
