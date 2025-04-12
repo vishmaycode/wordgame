@@ -19,25 +19,26 @@ export function Keyboard({ onKeyPress, keyStates }: KeyboardProps) {
           {row.map((key) => {
             const status = keyStates[key.toLowerCase()] || 'unused';
             const isSpecialKey = key === 'Enter' || key === '⌫';
-            
+
+            const baseClass = `
+              ${isSpecialKey ? 'px-4' : 'px-3'}
+              py-4 rounded font-bold text-sm
+              transform transition-all duration-200
+              active:scale-95 hover:scale-105
+            `;
+
+            const statusClass = {
+              correct: 'bg-green-500 text-white shadow-lg dark:bg-green-600',
+              present: 'bg-yellow-500 text-white shadow-md dark:bg-yellow-600',
+              absent: 'bg-gray-400 text-black dark:bg-gray-800 dark:text-white',
+              unused: 'bg-gray-200 text-black hover:bg-gray-300 dark:bg-gray-600 dark:text-white hover:dark:bg-gray-500',
+            }[status];
+
             return (
               <button
                 key={key}
                 onClick={() => onKeyPress(key)}
-                className={`
-                  ${isSpecialKey ? 'px-4' : 'px-3'} 
-                  py-4 rounded font-bold text-sm
-                  transform transition-all duration-200
-                  active:scale-95 hover:scale-105
-                  ${status === 'correct' ? 
-                    'bg-green-600 text-white shadow-lg' :
-                    status === 'present' ? 
-                    'bg-yellow-600 text-white shadow-md' :
-                    status === 'absent' ? 
-                    'bg-gray-800 text-white' :
-                    'bg-gray-600 text-white hover:bg-gray-600'
-                  }
-                `}
+                className={`${baseClass} ${statusClass}`}
               >
                 {key}
               </button>
@@ -47,4 +48,5 @@ export function Keyboard({ onKeyPress, keyStates }: KeyboardProps) {
       ))}
     </div>
   );
+
 }

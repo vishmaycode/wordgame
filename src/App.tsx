@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Grid } from './components/Grid';
 import { Keyboard } from './components/Keyboard';
+import { useTheme } from './hooks/useTheme';
 import { checkGuess, getWordOfTheDay, isValidWord } from './utils';
 import { GameState, KeyboardKey } from './types';
 import WORD_LIST from './wordlist';
@@ -10,14 +11,14 @@ function App() {
   const [gameState, setGameState] = useState<GameState>(() => {
     // Get stored state from localStorage
     const savedState = localStorage.getItem('wordleGameState');
-    
+
     // Get today's word
     const { word, dayNumber } = getWordOfTheDay(WORD_LIST);
-    
+
     // If we have saved state, check if it's from today
     if (savedState) {
       const parsedState = JSON.parse(savedState);
-      
+
       // Check if the saved state is from the current day
       if (parsedState.dayNumber === dayNumber) {
         return {
@@ -27,7 +28,7 @@ function App() {
       }
       // If it's a new day, start fresh
     }
-    
+
     // Initialize a new game state
     return {
       currentGuess: '',
@@ -41,6 +42,7 @@ function App() {
     };
   });
 
+  const { theme, toggleTheme } = useTheme();
   const [keyStates, setKeyStates] = useState<Record<string, KeyboardKey['status']>>({});
 
   // Save game state to localStorage whenever it changes
@@ -76,23 +78,23 @@ function App() {
 
       const newGuesses = [...gameState.guesses, gameState.currentGuess];
       const won = gameState.currentGuess.toLowerCase() === gameState.targetWord.toLowerCase();
-      
+
       // Update key states
       const result = checkGuess(gameState.currentGuess.toLowerCase(), gameState.targetWord.toLowerCase());
       const newKeyStates = { ...keyStates };
-      
+
       gameState.currentGuess.toLowerCase().split('').forEach((letter, i) => {
         const currentStatus = newKeyStates[letter];
         const newStatus = result[i];
-        
+
         if (currentStatus === 'correct') return;
         if (currentStatus === 'present' && newStatus !== 'correct') return;
-        
+
         newKeyStates[letter] = newStatus;
       });
 
       setKeyStates(newKeyStates);
-      
+
       setGameState(prev => ({
         ...prev,
         guesses: newGuesses,
@@ -122,28 +124,37 @@ function App() {
   }, [handleKeyPress]);
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <header className="border-b border-gray-800 bg-gray-800">
-        <div className="max-w-4xl mx-auto px-4 py-3">
-          <h1 className="text-2xl font-bold text-white text-center">Wordster</h1>
+    <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-white transition-colors duration-300">
+      <header className="border-b border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-800 transition-colors duration-300 p-4">
+        <div className="flex justify-between items-center relative">
+          <h1 className="text-2xl font-bold text-center w-full">Wordster</h1>
+          <button
+            onClick={toggleTheme}
+            className="absolute right-4 text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? '🌣' : '☾'}
+          </button>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {gameState.gameOver && (
-          <div className="text-center mb-8 bg-gray-800 rounded-lg p-4 shadow-lg">
-            <p className="text-xl font-bold text-white">
+          <div className="text-center mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg p-4 shadow-lg transition-colors duration-300">
+            <p className="text-xl font-bold">
               {gameState.won ? 'Congratulations!' : 'Better luck next time!'}
             </p>
-            <p className="text-gray-400 mt-2">
+            <p className="text-gray-600 dark:text-gray-400 mt-2">
               The word was: <span className="font-mono font-bold">{gameState.targetWord.toUpperCase()}</span>
             </p>
           </div>
         )}
 
         {gameState.error && (
-          <div className="text-center mb-4">
-            <p className="text-red-500 font-semibold">{gameState.error}</p>
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
+            <div className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-4 py-2 mt-12 rounded shadow-lg border border-red-300 dark:border-red-700 transition-all duration-300">
+              {gameState.error}
+            </div>
           </div>
         )}
 
@@ -152,7 +163,7 @@ function App() {
           currentGuess={gameState.currentGuess}
           targetWord={gameState.targetWord}
         />
-        
+
         <div className="mt-8">
           <Keyboard
             onKeyPress={handleKeyPress}

@@ -13,4 +13,4 @@ export interface KeyboardKey {
   status: 'correct' | 'present' | 'absent' | 'unused';
 }
 
-export type Theme = 'dark';
+export type Theme = 'dark' | 'light';
