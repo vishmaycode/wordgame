@@ -5,6 +5,7 @@ import { useTheme } from './hooks/useTheme';
 import { checkGuess, getWordOfTheDay, isValidWord } from './utils';
 import { GameState, KeyboardKey } from './types';
 import WORD_LIST from './wordlist';
+import { Sun, Moon } from 'lucide-react';
 
 function App() {
   // Load saved game state or start a new game
@@ -133,7 +134,7 @@ function App() {
             className="absolute right-4 text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? '🌣' : '☾'}
+            {theme === 'dark' ? <Sun /> : <Moon />}
           </button>
         </div>
       </header>
