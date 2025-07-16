@@ -1,6 +1,6 @@
-# Wordster (wordle clone)
+# WordGame (wordle clone)
 
-### This is a Wordster app created using Vite + React + Typescript
+### This is a WordGame app created using Vite + React + Typescript
 
 #### Working
  - It does not have a backend, the words are stored in a list 
