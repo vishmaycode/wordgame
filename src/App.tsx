@@ -128,7 +128,7 @@ function App() {
     <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-white transition-colors duration-300">
       <header className="border-b border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-800 transition-colors duration-300 p-4">
         <div className="flex justify-between items-center relative">
-          <h1 className="text-2xl font-bold text-center w-full">Wordster</h1>
+          <h1 className="text-2xl font-bold text-center w-full">WordGame</h1>
           <button
             onClick={toggleTheme}
             className="absolute right-4 text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150"
