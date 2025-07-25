@@ -5,7 +5,7 @@ import { useTheme } from './hooks/useTheme';
 import { checkGuess, getWordOfTheDay, isValidWord } from './utils';
 import { GameState, KeyboardKey } from './types';
 import WORD_LIST from './wordlist';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Keyboard as KeyboardIcon } from 'lucide-react';
 
 function App() {
   // Load saved game state or start a new game
@@ -45,6 +45,7 @@ function App() {
 
   const { theme, toggleTheme } = useTheme();
   const [keyStates, setKeyStates] = useState<Record<string, KeyboardKey['status']>>({});
+  const [showKeyboard, setShowKeyboard] = useState(false);
 
   // Save game state to localStorage whenever it changes
   useEffect(() => {
@@ -165,12 +166,31 @@ function App() {
           targetWord={gameState.targetWord}
         />
 
-        <div className="mt-8">
+        <div className="mt-8 sm:hidden">
           <Keyboard
             onKeyPress={handleKeyPress}
             keyStates={keyStates}
           />
         </div>
+
+        <div className="hidden sm:flex justify-center mt-4">
+            <button 
+                onClick={() => setShowKeyboard(!showKeyboard)} 
+                className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition flex items-center gap-2"
+            >
+                <KeyboardIcon size={20} />
+                {showKeyboard ? 'Hide Keyboard' : 'Show Keyboard'}
+            </button>
+        </div>
+
+        {showKeyboard && (
+            <div className="mt-8 hidden sm:block">
+              <Keyboard
+                onKeyPress={handleKeyPress}
+                keyStates={keyStates}
+              />
+            </div>
+        )}
       </main>
     </div>
   );

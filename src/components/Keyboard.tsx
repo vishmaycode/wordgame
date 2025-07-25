@@ -13,7 +13,7 @@ interface KeyboardProps {
 
 export function Keyboard({ onKeyPress, keyStates }: KeyboardProps) {
   return (
-    <div className="w-full max-w-xl mx-auto p-2">
+    <div className="w-full max-w-lg sm:max-w-xl mx-auto p-1 sm:p-2">
       {KEYBOARD_ROWS.map((row, i) => (
         <div key={i} className="flex justify-center gap-1 my-1">
           {row.map((key) => {
@@ -21,8 +21,9 @@ export function Keyboard({ onKeyPress, keyStates }: KeyboardProps) {
             const isSpecialKey = key === 'Enter' || key === '⌫';
 
             const baseClass = `
-              ${isSpecialKey ? 'px-4' : 'px-3'}
-              py-4 rounded font-bold text-sm
+              flex-1 sm:flex-none
+              ${isSpecialKey ? 'sm:px-4 px-2' : 'sm:px-3 px-1.5'}
+              py-3 sm:py-4 rounded font-bold text-xs sm:text-sm
               transform transition-all duration-200
               active:scale-95 hover:scale-105
             `;

@@ -10,9 +10,9 @@ export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
   const rows = [...guesses, currentGuess, ...empties].slice(0, 6);
 
   return (
-    <div className="grid grid-rows-6 gap-2 w-full max-w-sm mx-auto p-2">
+    <div className="grid grid-rows-6 gap-1.5 sm:gap-2 w-full max-w-xs sm:max-w-lg mx-auto p-2">
       {rows.map((guess, i) => (
-        <div key={i} className="grid grid-cols-5 gap-2">
+        <div key={i} className="grid grid-cols-5 gap-1.5 sm:gap-2">
           {Array(5).fill('').map((_, j) => {
             const letter = guess[j] || '';
             let status = 'empty';
@@ -47,7 +47,7 @@ export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
             // Define style classes for light and dark themes
             const baseClass = `
               w-full aspect-square flex items-center justify-center
-              text-2xl font-bold border-2 rounded
+              text-xl sm:text-2xl font-bold border-2 rounded
               transform transition-all duration-300
               ${letter ? 'scale-100' : 'scale-95'}
             `;
