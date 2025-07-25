@@ -130,13 +130,23 @@ function App() {
       <header className="border-b border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-800 transition-colors duration-300 p-4">
         <div className="flex justify-between items-center relative">
           <h1 className="text-2xl font-bold text-center w-full">WordGame</h1>
-          <button
-            onClick={toggleTheme}
-            className="absolute right-4 text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun /> : <Moon />}
-          </button>
+          <div className="absolute right-4 flex items-center gap-4">
+            {/* Hide keyboard toggle button on mobile when keyboard is visible */}
+            <button
+              onClick={() => setShowKeyboard((prev) => !prev)}
+              className="text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150 sm:inline-block hidden mr-2"
+              aria-label={showKeyboard ? 'Hide Keyboard' : 'Show Keyboard'}
+            >
+              <KeyboardIcon />
+            </button>
+            <button
+              onClick={toggleTheme}
+              className="text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun /> : <Moon />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -166,6 +176,7 @@ function App() {
           targetWord={gameState.targetWord}
         />
 
+        {/* Always show keyboard on mobile, toggle on desktop */}
         <div className="mt-8 sm:hidden">
           <Keyboard
             onKeyPress={handleKeyPress}
@@ -173,23 +184,13 @@ function App() {
           />
         </div>
 
-        <div className="hidden sm:flex justify-center mt-4">
-            <button 
-                onClick={() => setShowKeyboard(!showKeyboard)} 
-                className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition flex items-center gap-2"
-            >
-                <KeyboardIcon size={20} />
-                {showKeyboard ? 'Hide Keyboard' : 'Show Keyboard'}
-            </button>
-        </div>
-
         {showKeyboard && (
-            <div className="mt-8 hidden sm:block">
-              <Keyboard
-                onKeyPress={handleKeyPress}
-                keyStates={keyStates}
-              />
-            </div>
+          <div className="mt-8 hidden sm:block">
+            <Keyboard
+              onKeyPress={handleKeyPress}
+              keyStates={keyStates}
+            />
+          </div>
         )}
       </main>
     </div>
