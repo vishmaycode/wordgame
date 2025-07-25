@@ -11,7 +11,7 @@ function App() {
   // Load saved game state or start a new game
   const [gameState, setGameState] = useState<GameState>(() => {
     // Get stored state from localStorage
-    const savedState = localStorage.getItem('wordleGameState');
+    const savedState = localStorage.getItem('wordGameState');
 
     // Get today's word
     const { word, dayNumber } = getWordOfTheDay(WORD_LIST);
@@ -49,7 +49,7 @@ function App() {
 
   // Save game state to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('wordleGameState', JSON.stringify(gameState));
+    localStorage.setItem('wordGameState', JSON.stringify(gameState));
   }, [gameState]);
 
   const handleKeyPress = useCallback((key: string) => {
