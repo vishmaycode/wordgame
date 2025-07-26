@@ -17,6 +17,8 @@ export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
         const activeRowClass = isActiveRow
           ? 'ring-2 ring-blue-400 dark:ring-blue-300 inset-ring-2 ring-offset-transparent transition-all duration-200 scale-105 rounded-[4px] p-1'
           : '';
+        // Find the current input column in the active row
+        const inputCol = isActiveRow ? (currentGuess.length < 5 ? currentGuess.length : 4) : -1;
         return (
           <div
             key={i}
@@ -54,12 +56,15 @@ export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
             }
 
             // Define style classes for light and dark themes
-            const baseClass = `
-              w-full aspect-square flex items-center justify-center
-              text-xl sm:text-2xl font-bold border-2 rounded
-              transform transition-all duration-300
-              ${letter ? 'scale-100' : 'scale-95'}
-            `;
+            // Remove border-2 if this is the input cell, so border-b-4 is visible
+            const isInputCell = isActiveRow && j === inputCol;
+            const baseClass = [
+              'w-full aspect-square flex items-center justify-center',
+              'text-xl sm:text-2xl font-bold rounded',
+              'transform transition-all duration-300',
+              letter ? 'scale-100' : 'scale-95',
+              isInputCell ? 'border-b-4 border-b-blue-500 dark:border-b-blue-300 border-2 border-transparent' : 'border-2',
+            ].join(' ');
 
             const statusClass = {
               empty: 'bg-gray-200 border-gray-300 text-black dark:bg-gray-700 dark:border-gray-700 dark:text-white',
