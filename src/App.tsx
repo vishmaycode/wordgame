@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Grid } from './components/Grid';
 import { Keyboard } from './components/Keyboard';
 import { useTheme } from './hooks/useTheme';
+import DeveloperBadge from "./components/DeveloperBadge.tsx";
 import { checkGuess, getWordOfTheDay, isValidWord } from './utils';
 import { GameState, KeyboardKey } from './types';
 import WORD_LIST from './wordlist';
@@ -127,111 +128,115 @@ function App() {
   }, [handleKeyPress]);
 
   return (
-    <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-white transition-colors duration-300">
-      <header className="border-b border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-800 transition-colors duration-300 p-4">
-        <div className="flex justify-between items-center relative">
-          {/* How to Play Button */}
-          <button
-            onClick={() => setShowHowToPlay(true)}
-            className="absolute left-4 text-black dark:text-white hover:text-blue-500 dark:hover:text-blue-300 transition text-2xl font-bold"
-            aria-label="How to Play"
-          >
-            ?
-          </button>
-          <h1 className="text-2xl font-bold text-center w-full">WordGame</h1>
-          <div className="absolute right-4 flex items-center gap-4">
-            {/* Hide keyboard toggle button on mobile when keyboard is visible */}
+    <>
+      <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-white transition-colors duration-300">
+        <header className="border-b border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-800 transition-colors duration-300 p-4">
+          <div className="flex justify-between items-center relative">
+            {/* How to Play Button */}
             <button
-              onClick={() => setShowKeyboard((prev) => !prev)}
-              className="text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150 sm:inline-block hidden mr-2"
-              aria-label={showKeyboard ? 'Hide Keyboard' : 'Show Keyboard'}
+              onClick={() => setShowHowToPlay(true)}
+              className="absolute left-4 text-black dark:text-white hover:text-blue-500 dark:hover:text-blue-300 transition text-2xl font-bold"
+              aria-label="How to Play"
             >
-              <KeyboardIcon />
+              ?
             </button>
-            <button
-              onClick={toggleTheme}
-              className="text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? <Sun /> : <Moon />}
-            </button>
-          </div>
-        </div>
-        {/* How to Play Modal */}
-        {showHowToPlay && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full p-6 relative animate-fade-in">
+            <h1 className="text-2xl font-bold text-center w-full">WordGame</h1>
+            <div className="absolute right-4 flex items-center gap-4">
+              {/* Hide keyboard toggle button on mobile when keyboard is visible */}
               <button
-                onClick={() => setShowHowToPlay(false)}
-                className="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl font-bold"
-                aria-label="Close How to Play"
+                onClick={() => setShowKeyboard((prev) => !prev)}
+                className="text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150 sm:inline-block hidden mr-2"
+                aria-label={showKeyboard ? 'Hide Keyboard' : 'Show Keyboard'}
               >
-                ×
+                <KeyboardIcon />
               </button>
-              <h2 className="text-2xl font-bold mb-4 text-center">How to Play</h2>
-              <ol className="list-decimal list-inside space-y-2 text-base text-gray-800 dark:text-gray-200">
-                <li>Guess the <b>5-letter word</b> in 6 tries or less.</li>
-                <li>Each guess must be a valid English word. Type your guess and press <b>Enter</b>.</li>
-                <li>After each guess, the color of the tiles will change to show how close your guess was to the word:
-                  <ul className="list-disc list-inside ml-4 mt-1">
-                    <li><span className="inline-block w-5 h-5 bg-green-500 border border-green-700 rounded mr-2 align-middle"></span> <b>Green</b>: Correct letter in the correct spot.</li>
-                    <li><span className="inline-block w-5 h-5 bg-yellow-500 border border-yellow-700 rounded mr-2 align-middle"></span> <b>Yellow</b>: Correct letter in the wrong spot.</li>
-                    <li><span className="inline-block w-5 h-5 bg-gray-400 border border-gray-700 rounded mr-2 align-middle"></span> <b>Gray</b>: Letter is not in the word.</li>
-                  </ul>
-                </li>
-                <li>Use the on-screen or physical keyboard to type your guesses.</li>
-                <li>The word is the same for everyone each day. Come back tomorrow for a new word!</li>
-              </ol>
-              <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">Good luck and have fun!</div>
+              <button
+                onClick={toggleTheme}
+                className="text-black dark:text-white hover:text-gray-400 dark:hover:text-gray-600 transition scale-150"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <Sun /> : <Moon />}
+              </button>
             </div>
           </div>
-        )}
-      </header>
-
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {gameState.gameOver && (
-          <div className="text-center mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg p-4 shadow-lg transition-colors duration-300">
-            <p className="text-xl font-bold">
-              {gameState.won ? 'Congratulations!' : 'Better luck next time!'}
-            </p>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              The word was: <span className="font-mono font-bold">{gameState.targetWord.toUpperCase()}</span>
-            </p>
-          </div>
-        )}
-
-        {gameState.error && (
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
-            <div className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-4 py-2 mt-12 rounded shadow-lg border border-red-300 dark:border-red-700 transition-all duration-300">
-              {gameState.error}
+          {/* How to Play Modal */}
+          {showHowToPlay && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+              <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full p-6 relative animate-fade-in">
+                <button
+                  onClick={() => setShowHowToPlay(false)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl font-bold"
+                  aria-label="Close How to Play"
+                >
+                  ×
+                </button>
+                <h2 className="text-2xl font-bold mb-4 text-center">How to Play</h2>
+                <ol className="list-decimal list-inside space-y-2 text-base text-gray-800 dark:text-gray-200">
+                  <li>Guess the <b>5-letter word</b> in 6 tries or less.</li>
+                  <li>Each guess must be a valid English word. Type your guess and press <b>Enter</b>.</li>
+                  <li>After each guess, the color of the tiles will change to show how close your guess was to the word:
+                    <ul className="list-disc list-inside ml-4 mt-1">
+                      <li><span className="inline-block w-5 h-5 bg-green-500 border border-green-700 rounded mr-2 align-middle"></span> <b>Green</b>: Correct letter in the correct spot.</li>
+                      <li><span className="inline-block w-5 h-5 bg-yellow-500 border border-yellow-700 rounded mr-2 align-middle"></span> <b>Yellow</b>: Correct letter in the wrong spot.</li>
+                      <li><span className="inline-block w-5 h-5 bg-gray-400 border border-gray-700 rounded mr-2 align-middle"></span> <b>Gray</b>: Letter is not in the word.</li>
+                    </ul>
+                  </li>
+                  <li>Use the on-screen or physical keyboard to type your guesses.</li>
+                  <li>The word is the same for everyone each day. Come back tomorrow for a new word!</li>
+                </ol>
+                <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">Good luck and have fun!</div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </header>
 
-        <Grid
-          guesses={gameState.guesses}
-          currentGuess={gameState.currentGuess}
-          targetWord={gameState.targetWord}
-        />
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          {gameState.gameOver && (
+            <div className="text-center mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg p-4 shadow-lg transition-colors duration-300">
+              <p className="text-xl font-bold">
+                {gameState.won ? 'Congratulations!' : 'Better luck next time!'}
+              </p>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">
+                The word was: <span className="font-mono font-bold">{gameState.targetWord.toUpperCase()}</span>
+              </p>
+            </div>
+          )}
 
-        {/* Always show keyboard on mobile, toggle on desktop */}
-        <div className="mt-8 sm:hidden">
-          <Keyboard
-            onKeyPress={handleKeyPress}
-            keyStates={keyStates}
+          {gameState.error && (
+            <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
+              <div className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-4 py-2 mt-12 rounded shadow-lg border border-red-300 dark:border-red-700 transition-all duration-300">
+                {gameState.error}
+              </div>
+            </div>
+          )}
+
+          <Grid
+            guesses={gameState.guesses}
+            currentGuess={gameState.currentGuess}
+            targetWord={gameState.targetWord}
           />
-        </div>
 
-        {showKeyboard && (
-          <div className="mt-8 hidden sm:block">
+          {/* Always show keyboard on mobile, toggle on desktop */}
+          <div className="mt-8 sm:hidden">
             <Keyboard
               onKeyPress={handleKeyPress}
               keyStates={keyStates}
             />
           </div>
-        )}
-      </main>
-    </div>
+
+          {showKeyboard && (
+            <div className="mt-8 hidden sm:block">
+              <Keyboard
+                onKeyPress={handleKeyPress}
+                keyStates={keyStates}
+              />
+            </div>
+          )}
+        </main>
+      </div>
+
+      <DeveloperBadge />
+    </>
   );
 }
 
