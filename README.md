@@ -1,6 +1,9 @@
-# WordGame (wordle clone)
+# WordGame
 
 ### This is a WordGame app created using Vite + React + Typescript
+
+#### Link
+https://wordgame.vishcodes.com
 
 #### Working
  - It does not have a backend, the words are stored in a list 
@@ -18,7 +21,7 @@ npm i
 
 #### for running locally
 ```shell
-npm run dev
+npm run start
 ```
 
 #### for live build

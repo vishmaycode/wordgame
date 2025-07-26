@@ -10,9 +10,18 @@ export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
   const rows = [...guesses, currentGuess, ...empties].slice(0, 6);
 
   return (
-    <div className="grid grid-rows-6 gap-1.5 sm:gap-2 w-full max-w-xs sm:max-w-lg mx-auto p-2">
-      {rows.map((guess, i) => (
-        <div key={i} className="grid grid-cols-5 gap-1.5 sm:gap-2">
+    <div className="grid grid-rows-6 gap-2 sm:gap-2.5 w-full max-w-xs sm:max-w-lg mx-auto p-2">
+      {rows.map((guess, i) => {
+        // Always highlight the first empty row (the next row to be filled)
+        const isActiveRow = i === guesses.length;
+        const activeRowClass = isActiveRow
+          ? 'ring-2 ring-blue-400 dark:ring-blue-300 inset-ring-2 ring-offset-transparent transition-all duration-200 scale-105 rounded-[4px] p-1'
+          : '';
+        return (
+          <div
+            key={i}
+            className={`grid grid-cols-5 gap-2 sm:gap-2.5 ${activeRowClass}`}
+          >
           {Array(5).fill('').map((_, j) => {
             const letter = guess[j] || '';
             let status = 'empty';
@@ -65,8 +74,9 @@ export function Grid({ guesses, currentGuess, targetWord }: GridProps) {
               </div>
             );
           })}
-        </div>
-      ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
