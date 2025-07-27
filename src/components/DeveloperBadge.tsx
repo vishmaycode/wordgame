@@ -27,7 +27,7 @@ const DeveloperBadge = () => {
     return (
         <>
             {/* Badge */}
-            <div className="fixed top-[200px] -right-1 z-50">
+            <div className="fixed top-[70px] -right-1 z-50">
                 <button
                     className="border-b border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-800 transition-colors duration-300 dark:text-white text-gray-800 font-bold py-2 px-4 rounded shadow-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     onClick={togglePopup}
