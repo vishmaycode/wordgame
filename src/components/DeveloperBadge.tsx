@@ -14,7 +14,7 @@ const DeveloperBadge = () => {
         name: 'Vishmay Karbotkar',
         title: 'Full Stack Developer | DevOps',
         links: {
-            website: 'https://me.vishcodes.com',
+            website: 'https://vishcodes.com',
             email: 'vishcode@gmail.com',
             github: 'https://github.com/vishmaycode',
             linkedin: 'https://in.linkedin.com/in/vishmay',
