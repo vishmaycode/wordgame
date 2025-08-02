@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Globe, Mail, Linkedin, Instagram, Facebook, Twitter, Github } from 'lucide-react';
-import avatarImage from '/vishmay.jpg?url';
+import avatarImage from '/profile.webp?url';
 
 const DeveloperBadge = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
